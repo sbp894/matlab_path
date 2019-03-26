@@ -13,7 +13,7 @@
 % 'plot', true (default) or false: do not plot PSD if false
 % 'nfft', nfft: for frequency resolution
 
-function [ampOut, freq, ax]=plot_dft(vecin, fs, varargin)
+function [ampOut, freq, lHan]=plot_dft(vecin, fs, varargin)
 
 %% parse input
 p=inputParser;
@@ -61,27 +61,28 @@ if p.Results.phase
 end
 
 if strcmp(p.Results.yscale, 'log')
-    ax=plot(freq, amp_dB, 'linew', 2);
+    lHan=plot(freq, amp_dB, 'linew', 2);
     ampOut= amp_dB;
 elseif strcmp(p.Results.yscale, 'lin')
-    ax=plot(freq, amp, 'linew', 2);
+    lHan=plot(freq, amp, 'linew', 2);
     ampOut= amp;
 end
 
+grid on;
 xlabel('f (Hz)');
 ylabel('db(|P1(f)|), dB');
 title(p.Results.title);
 
 if p.Results.phase
     ax(2)=subplot(212);
-    semilogx(freq,unwrap(angle(P2(1:ceil(p.Results.NFFT/2+1)))), 'linew', 2);
+    semilogx(freq, unwrap(angle(P2(1:ceil(p.Results.NFFT/2+1)))), 'linew', 2);
     title('Phase Plot');
     linkaxes(ax, 'x');
+    grid on;
 end
 
 set(gca, 'xscale', p.Results.xscale);
 xlim([fs/2/p.Results.NFFT fs/2]);
-grid on;
 if ~sum(contains(p.UsingDefaults, 'yRange'))
     ylim([max(amp_dB)-p.Results.phase.yRange+10 max(amp_dB)+10]);
 end

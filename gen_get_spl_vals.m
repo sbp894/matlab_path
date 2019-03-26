@@ -9,7 +9,7 @@ tOVlap= tWindow*fracOVlap;
 tSlide= tWindow-tOVlap;
 pRef= 20e-6;
 
-nSegs= 1 + floor((t(end)-tWindow)/tSlide);
+nSegs= 1 + round((t(end)-tWindow)/tSlide);
 
 timeVals= nan(nSegs, 1);
 splVals= nan(nSegs, 1);

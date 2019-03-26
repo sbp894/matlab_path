@@ -4,6 +4,10 @@ if ~exist('verbose', 'var')
     verbose=0;
 end
 
+if ~ismember(size(vecIn,2), [1,2])
+    error('signal should be a one or two column matrix');
+end
+
 pRef= 20e-6; % for re. dB SPl
 vecOut= nan(size(vecIn));
 for chanVar= 1:size(vecIn, 2)

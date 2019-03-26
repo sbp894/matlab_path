@@ -13,7 +13,7 @@
 % 'nfft', nfft: for frequency resolution
 % 'yscale', {'dB', 'log' || 'mag', 'lin'}
 
-function [Pxx_dB,freq, ax]=plot_dpss_psd(vecin, fs, varargin)
+function varargout=plot_dpss_psd(vecin, fs, varargin)
 
 %% parse input
 p=inputParser;
@@ -27,6 +27,7 @@ DC_default= false;
 plot_default= true;
 nfft_default= 2^nextpow2(length(vecin));
 yscale_default= 'dB';
+yrange_default= -1;
 
 addRequired(p, 'vecin', @isnumeric);
 addRequired(p, 'fs', @isnumeric);
@@ -37,9 +38,11 @@ addParameter(p,'DC', DC_default, @islogical);
 addParameter(p,'plot', plot_default, @islogical);
 addParameter(p,'NFFT', nfft_default, @isnumeric);
 addParameter(p,'yscale', yscale_default, @ischar);
+addParameter(p,'yrange', yrange_default, @isnumeric);
 
 p.KeepUnmatched = true;
 parse(p,vecin,fs,varargin{:})
+
 
 %% actual code
 
@@ -48,14 +51,21 @@ if ~p.Results.DC
 end
 
 [Pxx, freq] = pmtm(vecin, p.Results.NW, p.Results.NFFT, fs);
+
 Pxx_dB= db(Pxx)/2;
 if p.Results.plot
     if ismember(lower(p.Results.yscale), {'log', 'db'})
         ax=plot(freq, Pxx_dB, 'linew', 2);
         ylabel('PSD (dB/Hz)');
+        if p.Results.yrange>0 
+            ylim([max(Pxx_dB)-p.Results.yrange max(Pxx_dB)+5]);
+        end
     elseif ismember(lower(p.Results.yscale), {'lin', 'mag'})
         ax=plot(freq, Pxx, 'linew', 2);
         ylabel('PSD (LIN-MAG/Hz)');
+        if p.Results.yrange>0 % means not default value
+            warning('The option ''yrange'' is valid only for log y-scale');
+        end
     end
     set(gca, 'xscale', p.Results.xscale);
     
@@ -64,4 +74,10 @@ if p.Results.plot
     grid on;
 else
     ax= nan;
+end
+
+if nargout
+    varargout{1}= Pxx_dB;
+    varargout{2}= freq;
+    varargout{3}= ax;
 end
