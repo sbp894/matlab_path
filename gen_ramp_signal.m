@@ -13,7 +13,8 @@ end
 
 % create ON ramp
 nSampON= round(fs*durONramp);
-NW=2;
+NW=1;
+
 
 [ramp_tapers_on_all, ramp_weights_on_all]= dpss(2*nSampON, NW);
 on_taper= ramp_tapers_on_all(1:nSampON,1);

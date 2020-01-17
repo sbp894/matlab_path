@@ -1,12 +1,12 @@
 % function [outSignal, noise]= create_noisy_signal(inSignal, targetSNR, noise_or_Type)
-% noise_or_Type: 
-%   0 for white, 
-%   1 for PSD matched, 
+% noise_or_Type:
+%   0 for white,
+%   1 for PSD matched,
 %   or vector should be same
 % length as inSignal
 function [outSignal, noise]= create_noisy_signal(inSignal, targetSNR, noise_or_Type)
 
-rng('shuffle');
+rng(0);
 
 if ~exist('targetSNR', 'var')
     targetSNR= 0;
@@ -27,11 +27,11 @@ elseif isnumeric(noise_or_Type)
                 noise_or_Type= 'inputPSDmatched';
         end
     else
-       noise= noise_or_Type; 
+        noise= noise_or_Type;
     end
 elseif ischar(noise_or_Type)
     if isempty(contains(noise_or_Type, {'white', 'pink', 'brown', 'blue', 'purple'}))
-       error('noise_or_Type unknown'); 
+        error('noise_or_Type unknown');
     end
 end
 
@@ -43,6 +43,7 @@ if ~exist('noise', 'var')
         cn= dsp.ColoredNoise('Color', noise_or_Type, 'SamplesPerFrame', length(inSignal));
         noise= cn();
     elseif contains(lower(noise_or_Type), 'matched')
+        warning('Currently using lpc and not randomized phase of FFT(IN)')
         a= lpc(inSignal, min(50, numel(inSignal)/50));
         b= 1;
         %     fvtool(b, a, fs);

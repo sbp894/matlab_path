@@ -7,7 +7,7 @@
 % ---------------------------------------------------------------------------
 % vecin: input vector, can be either row or column vector.
 % fs: Sampling Frequency
-% window: {'hamming' (default), 'bartlett', 'hann', 'blackman', 'rectwin'}
+% window: {'hamming' (default), 'bartlett', 'hann', 'blackman', 'rect'}
 % xscale: {'log' (default), 'lin'}
 % 'FracWindow', FracWindow: ratio of window length to vecin length (default 0.5)
 % 'FracOverlap', FracOverlap: fraction of slide length to window length (default 0.5)
@@ -25,13 +25,14 @@ FracWindow_default= 0.5;
 
 x_scale_default= 'log';
 
-WindowType_default= 'hamming';
-WindowType_valid={'hamming', 'bartlett', 'hann', 'blackman', 'rectwin'};
+WindowType_default= 'rectwin';
+WindowType_valid={'hamming', 'bartlett', 'hann', 'blackman', 'rect', 'rectwin', 'slepian', 'dpss'};
 WindowType_check= @(x) any(validatestring(x, WindowType_valid));
 
 title_default= '';
 DC_default= false;
 plot_default= true;
+yrange_default= -1;
 
 addRequired(p, 'vecin', @isnumeric);
 addRequired(p, 'fs', @isnumeric);
@@ -43,6 +44,7 @@ addParameter(p,'title', title_default, @ischar);
 addParameter(p,'DC', DC_default, @islogical);
 addParameter(p,'plot', plot_default, @islogical);
 addParameter(p,'NFFT', 2^nextpow2(length(vecin)), @isnumeric);
+addParameter(p,'yrange', yrange_default, @isnumeric);
 
 p.KeepUnmatched = true;
 parse(p,vecin,fs,varargin{:})
@@ -60,6 +62,8 @@ if ~p.Results.DC
 end
 
 switch lower(p.Results.window)
+    case {'slepian', 'dpss'}
+        t_window=dpss(nWindow, 1, 1);
     case 'hamming'
         t_window=hamming(nWindow);
     case 'bartlett'
@@ -68,12 +72,12 @@ switch lower(p.Results.window)
         t_window=hann(nWindow);
     case 'blackman'
         t_window=blackman(nWindow);
-    case 'rectwin'
+    case {'rect', 'rectwin'}
         t_window=rectwin(nWindow);
 end
 
 [Pxx , freq]= pwelch(vecin, t_window, nOverlap, p.Results.NFFT, fs);
-Pxx_dB=db(Pxx)/2;
+Pxx_dB=pow2db(Pxx);
 
 if p.Results.plot
     ax=plot(freq, Pxx_dB, 'linew', 2);
@@ -81,6 +85,11 @@ if p.Results.plot
     
     title(p.Results.title);
     ylabel('PSD (dB/Hz)');
+
+    if p.Results.yrange>0
+        ylim([max(Pxx_dB)-p.Results.yrange max(Pxx_dB)+5]);
+    end
+
     switch p.Results.xscale
         case 'log'
             xlim([fs/p.Results.NFFT fs/2]);

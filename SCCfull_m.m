@@ -6,6 +6,7 @@ function [NSCC,delay,AVGrates,TOTALspikes] = SCCfull_m(SpikeTrains,DELAYbinwidth
 % Computes Normalized Shuffled Cross-Correlogram (NSCC) from a set of Spike Trains and Duration
 % Based on Louage et. al 2004
 
+warning('There''s still some difference between new-mexed and old versions\n');
 
 %% Compute AVGrates
 NUMspikeREPS=cell(1,2);

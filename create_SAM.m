@@ -24,9 +24,9 @@ elseif isempty(amp)
 end
 
 if ~exist('dur', 'var')
-    dur= 1;
+    dur= .2;
 elseif isempty(dur)
-    dur= 1;
+    dur= .2;
 end
 
 if ~exist('modDepth', 'var')
@@ -36,5 +36,5 @@ elseif isempty(modDepth)
 end
 
 
-time= (1/fs:1/fs:dur)';
+time= (0:1/fs:dur-1/fs)';
 sig= amp*(1+modDepth*sin(2*pi*fm*time + phi_m)).*sin(2*pi*fc*time + phi_c);

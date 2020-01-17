@@ -6,6 +6,8 @@ function [NSAC,delay,AVGrate,TOTALspikes] = SAChalf_m(SpikeTrain1,DELAYbinwidth,
 % Computes Normalized Shuffled Auto-Coprrelogram (NSAC) from a set of Spike Trains and Duration
 % Based on Louage et. al 2004
 
+warning('There''s still some difference between new-mexed and old versions\n');
+
 NUMspikeREPS=length(SpikeTrain1);
 
 %%%%%%%%%%%% Compute AVGrate

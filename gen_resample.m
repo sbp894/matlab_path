@@ -2,7 +2,7 @@
 function vecOut=gen_resample(vecIn, fsOld, fsNew)
 
 %% find p and q for resampling
-temp= rats(fsNew/fsOld);
+temp= rats(round(fsNew)/round(fsOld));
 temp(temp==' ')= [];
 if ~isempty(find(temp=='/', 1))
     pqEndPartition= find(temp=='/');
