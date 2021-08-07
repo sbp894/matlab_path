@@ -21,9 +21,9 @@ elseif isempty(amp)
 end
 
 if ~exist('phi', 'var')
-    phi= 2*pi*randn(size(freqStart));
+    phi= 2*pi*rand(size(freqStart));
 elseif isempty(phi)
-    phi= 2*pi*randn(size(freqStart));
+    phi= 2*pi*rand(size(freqStart));
 elseif (numel(freqStart)~= numel(phi)) && (numel(phi) == 1)
     phi= phi*ones(size(freqStart));
 elseif numel(phi) ~= numel(freqStart)
@@ -35,6 +35,6 @@ time= (0:1/fs:dur-1/fs)';
 sig=zeros(size(time));
 
 for freqVar=1:length(freqStart)
-    phi_instantaneous= phi(freqVar) + freqStart(freqVar).*time + (freqEnd(freqVar)-freqStart(freqVar))/2*(time).^2/dur; % Formula for phase in terms of frequency
+    phi_instantaneous= phi(freqVar) + freqStart(freqVar).*time + (freqEnd(freqVar)-freqStart(freqVar))/2* (time).^2 /dur; % Formula for phase in terms of frequency
     sig= sig+ amp(freqVar)*sin(2*pi*phi_instantaneous);
 end

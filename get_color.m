@@ -38,6 +38,9 @@ elseif ischar(col_name)
             out_color= [100 100 100]/255;
         case {'black', 'k'}
             out_color= [0 0 0]/255;
+
+        case {'orange'}
+            out_color= [90 60 0]/255;
     end
     
 elseif isnumeric(col_name)

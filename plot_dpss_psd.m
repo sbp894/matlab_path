@@ -88,7 +88,7 @@ elseif ismember(p.Results.xunit, {'Hz', 'hz'})
     xlab_str= 'Frequency (Hz)';
 end
 
-Pxx_dB= pow2db(Pxx_lin); % Previously: Pxx_lin is already A^2. So 10log10(*) for power => db(*)/2. 
+Pxx_dB= pow2db(Pxx_lin); % Previously: Pxx_lin is already A^2. So 10log10(*) for power => db(*)/2 or pow2db. 
 Pxx_ci_dB= pow2db(Pxx_ci_lin);
 yl_val = nan;
 

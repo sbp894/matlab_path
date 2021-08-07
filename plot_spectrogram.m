@@ -23,7 +23,7 @@ elseif isempty(nfft)
     nfft= 2^(nextpow2(tWindow*fs)+1);
 end
 if doPlot
-    spectrogram(sig, blackman(tWindow *fs), round(tWindow*fs*fracOVlap), nfft, 'yaxis', fs);
+    spectrogram(sig, blackman(round(tWindow *fs)), round(tWindow*fs*fracOVlap), nfft, 'yaxis', fs);
 else
     [S,F,T]= spectrogram(sig, blackman(tWindow *fs), round(tWindow*fs*fracOVlap), nfft, 'yaxis', fs);
     surf((tStart+T)*1e3,F/1e3,pow2db(abs(S)),'EdgeColor','none');

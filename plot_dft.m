@@ -94,7 +94,7 @@ P2= Y/L;
 
 if p.Results.sided==1
     amp= abs(P2(1:ceil(nfft/2+1)));
-    amp(2:end-1)= 2*amp(2:end-1);
+    amp(2:end-1)= sqrt(2)*amp(2:end-1); % so that power is ~same
     amp_dB= db(amp); % 20*log10(amp) = Power
     freq= linspace(0,fs/2,length(amp_dB));
     xscale= p.Results.xscale;
@@ -112,7 +112,7 @@ elseif p.Results.sided==2
     % Warn if not using default window (means user wanted log), but force
     % linear since two-sided
     if ~strcmp(xscale, p.Results.xscale) && ~any(ismember(p.UsingDefaults, 'xscale'))
-        warning('Using linear x-scale insteald of %s as two-sided FFT', p.Results.xscale);
+        warning('Using linear x-scale instead of %s as two-sided FFT', p.Results.xscale);
     end
     xl_val= [-fs/2 fs/2];
 end
