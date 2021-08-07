@@ -1,6 +1,6 @@
 function [splVals, timeVals]= gen_get_spl_vals(sig, fs, tWindow, fracOverlap)
 
-if ~exist('fracOVlap', 'var')
+if ~exist('fracOverlap', 'var')
     fracOverlap= 0;
 end
 

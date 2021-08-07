@@ -1,10 +1,10 @@
-function plot_spectrogram(sig, fs, tWindow, fracOVlap, nfft, doPlot, tStart)
+function [timePlot, freqPlot, dB_powPlot]= plot_spectrogram(sig, fs, tWindow, fracOVlap, nfft, useDefaultPlot, tStart)
 if ~exist('tStart', 'var')
     tStart= 0;
 end
 
-if ~exist('doPlot', 'var')
-    doPlot= 1;
+if ~exist('useDefaultPlot', 'var')
+    useDefaultPlot= 1;
 end
 if ~exist('tWindow', 'var')
     tWindow= 64e-3;
@@ -22,10 +22,22 @@ if ~exist('nfft', 'var')
 elseif isempty(nfft)
     nfft= 2^(nextpow2(tWindow*fs)+1);
 end
-if doPlot
-    spectrogram(sig, blackman(tWindow *fs), round(tWindow*fs*fracOVlap), nfft, 'yaxis', fs);
+nWindow= round(tWindow*fs);
+if useDefaultPlot
+    spectrogram(sig, blackman(nWindow), round(nWindow*fracOVlap), nfft, 'yaxis', fs);
+    timePlot= nan;
+    freqPlot= nan;
+    dB_powPlot= nan;
+    
 else
-    [S,F,T]= spectrogram(sig, blackman(tWindow *fs), round(tWindow*fs*fracOVlap), nfft, 'yaxis', fs);
-    surf((tStart+T)*1e3,F/1e3,pow2db(abs(S)),'EdgeColor','none');
+    [S, F, T]= spectrogram(sig, blackman(nWindow), round(nWindow*fracOVlap), nfft, 'yaxis', fs);
+    timePlot= (tStart+T)*1e3;
+    freqPlot= F/1e3;
+    dB_powPlot= pow2db(abs(S));
+    
+    surf(timePlot, freqPlot, dB_powPlot, 'EdgeColor', 'none');
     view(2);
+    grid off;
+    xlabel('Time (ms)');
+    ylabel('Frequency (kHz)');
 end

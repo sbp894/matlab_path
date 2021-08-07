@@ -1,7 +1,7 @@
 function voiced_boundaries = find_voicing_boundaries(sig, fs, doPlot, ENV_thresh)
 
 if ~exist('doPlot', 'var')
-    doPlot = true;
+    doPlot = false;
 end
 if ~exist('ENV_thresh', 'var')
     ENV_thresh= .1;

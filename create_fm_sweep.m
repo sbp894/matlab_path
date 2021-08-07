@@ -30,7 +30,6 @@ elseif numel(phi) ~= numel(freqStart)
     error('phase and frequency are of different length');
 end
 
-
 time= (0:1/fs:dur-1/fs)';
 sig=zeros(size(time));
 

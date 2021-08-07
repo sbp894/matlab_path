@@ -64,31 +64,31 @@ if ~p.Results.DC
     data_in=data_in-mean(data_in,1);
 end
 
-[Pxx_lin, freq, Pxx_ci_lin] = pmtm(data_in, p.Results.NW, p.Results.NFFT, fs, 'ConfidenceLevel', p.Results.ConfidenceLevel);
+[Pxx_pow, freq, Pxx_ci_lin] = pmtm(data_in, p.Results.NW, p.Results.NFFT, fs, 'ConfidenceLevel', p.Results.ConfidenceLevel);
 
 if p.Results.norm
     % Normalize to get PSD
-    Pxx_lin= Pxx_lin/p.Results.NFFT*fs;
+    Pxx_pow= Pxx_pow/p.Results.NFFT*fs;
     Pxx_ci_lin= Pxx_ci_lin/p.Results.NFFT*fs;
-% else 
-%     Pxx_lin= Pxx_lin; % /length(data_in). Shouldn't change pmtm output. 
+    % else
+    %     Pxx_lin= Pxx_lin; % /length(data_in). Shouldn't change pmtm output.
 end
 
 freq_inds2use= freq~=0;
 freq=freq(freq_inds2use);
-Pxx_lin=Pxx_lin(freq_inds2use, :);
+Pxx_pow=Pxx_pow(freq_inds2use, :);
 Pxx_ci_lin=Pxx_ci_lin(freq_inds2use,:);
 
-if ismember(p.Results.xunit, {'khz', 'k'})
+if ismember(lower(p.Results.xunit), {'khz', 'k'})
     freq= freq/1e3;
     xlim_div= 1e3;
     xlab_str= 'Frequency (kHz)';
-elseif ismember(p.Results.xunit, {'Hz', 'hz'})
+elseif ismember(lower(p.Results.xunit), 'hz')
     xlim_div= 1;
     xlab_str= 'Frequency (Hz)';
 end
 
-Pxx_dB= pow2db(Pxx_lin); % Previously: Pxx_lin is already A^2. So 10log10(*) for power => db(*)/2. 
+Pxx_dB= pow2db(Pxx_pow); % Previously: Pxx_lin is already A^2. So 10log10(*) for power => db(*)/2.
 Pxx_ci_dB= pow2db(Pxx_ci_lin);
 yl_val = nan;
 
@@ -104,7 +104,7 @@ if p.Results.plot
         end
         
     elseif ismember(lower(p.Results.yscale), {'lin', 'mag'})
-        Pxx_to_plot= Pxx_lin;
+        Pxx_to_plot= Pxx_pow;
         Pxx_ci_to_plot= Pxx_ci_lin;
         ylab_str = 'PSD (Amp_l_i_n/Hz)';
         
@@ -112,14 +112,14 @@ if p.Results.plot
             warning('The option ''yrange'' is valid only for log y-scale');
         end
     elseif ismember(lower(p.Results.yscale), {'dbspl', 'spl'})
-        Pxx_to_plot= dbspl(sqrt(Pxx_lin)/sqrt(2));
+        Pxx_to_plot= dbspl(sqrt(Pxx_pow)/sqrt(2));
         Pxx_ci_to_plot= dbspl(sqrt(Pxx_ci_lin)/sqrt(2));
         ylab_str = 'Power in dB SPL';
         
         if p.Results.yrange>0
             yl_val = [max(Pxx_to_plot)-p.Results.yrange max(Pxx_to_plot)+5];
         end
-end
+    end
     
     % Plot PSD and CI
     ax=plot(freq, Pxx_to_plot, '-', 'linew', 2);
@@ -134,16 +134,16 @@ end
             set(gca, 'ColorOrderIndex', max(1, get(gca, 'ColorOrderIndex')-1));
             ax(size(Pxx_to_plot,2) + plotVar)= bx;
         end
-%         hold off;
+        %         hold off;
     end
     
     % Plotting parameters
+    xlim([fs/p.Results.NFFT fs/2]/xlim_div);
     set(gca, 'xscale', p.Results.xscale);
     xlabel(xlab_str);
     ylabel(ylab_str);
     title(p.Results.title);
-    xlim([fs/p.Results.NFFT fs/2]/xlim_div);
-%     grid on;
+    %     grid on;
     if ~isnan(yl_val)
         ylim(yl_val);
     end

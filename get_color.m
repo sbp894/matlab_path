@@ -5,6 +5,7 @@ if ~exist('col_name', 'var')
     co= get(gca, 'colororder');
     col_num= get(gca, 'ColorOrderIndex');
     out_color= co(col_num+1, :);
+    
 elseif ischar(col_name)
     switch col_name
         case {'b', 'blue'}
@@ -27,7 +28,7 @@ elseif ischar(col_name)
             
         case {'dg', 'darkgreen'}
             out_color= [0 136 55]/255;
-
+            
         case {'prp', 'purple'}
             out_color= [123 50 148]/255;
             
@@ -36,8 +37,28 @@ elseif ischar(col_name)
             
         case {'gray'}
             out_color= [100 100 100]/255;
+            
+        case {'wg'} % white-gray
+            out_color= [200 200 200]/255;
+            
         case {'black', 'k'}
             out_color= [0 0 0]/255;
+            
+        case {'brown', 'br'}
+            out_color= [162 20 47]/255;
+            
+        case {'w', 'white'}
+            out_color= [255 255 255]/255;
+        case{'c', 'cyan'}
+            out_color= [0 255 255]/255;
+        case{'m', 'magenta'}
+            out_color= [255 0 255]/255;
+        case{'lbrown', 'lightbrown'}
+            out_color= [181 101 29]/255;
+        case{'bronze'}
+            out_color= [204 128 51]/255;
+        case {'pink'}
+            out_color= [255 192 203]/255;
     end
     
 elseif isnumeric(col_name)

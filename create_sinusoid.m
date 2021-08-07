@@ -22,9 +22,9 @@ elseif numel(amp) ~= numel(freq)
 end
 
 if ~exist('phi', 'var')
-    phi= 2*pi*randn(size(freq));
+    phi= 2*pi*rand(size(freq));
 elseif isempty(phi)
-    phi= 2*pi*randn(size(freq));
+    phi= 2*pi*rand(size(freq));
 elseif (numel(freq)~= numel(phi)) && (numel(phi) == 1)
     phi= phi*ones(size(freq));
 elseif numel(phi) ~= numel(freq)
