@@ -6,9 +6,9 @@ if nargin <3
 end
 
 if ~exist('phi_m', 'var')
-    phi_m= 0;
+    phi_m= -pi/2;
 elseif isempty(phi_m)
-    phi_m= 0;
+    phi_m= -pi/2;
 end
 
 if ~exist('phi_c', 'var')

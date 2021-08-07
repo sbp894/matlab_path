@@ -34,6 +34,7 @@ nfft_default= 2^nextpow2(length(vecin));
 phase_default= false;
 yRange_default= -100;
 sided_default= 1;
+xunit_default= 'hz';
 
 addRequired(p, 'vecin', @isnumeric);
 addRequired(p, 'fs', @isnumeric);
@@ -47,6 +48,7 @@ addParameter(p,'plot', plot_default, @islogical);
 addParameter(p,'NFFT', nfft_default, @isnumeric);
 addParameter(p,'yRange', yRange_default, @isnumeric);
 addParameter(p,'sided', sided_default, @isnumeric);
+addParameter(p,'xunit', xunit_default, @ischar);
 
 p.KeepUnmatched = true;
 parse(p,vecin,fs,varargin{:})
@@ -119,23 +121,31 @@ end
 
 if ismember(p.Results.yscale, {'log', 'db'})
     amp_to_plot= amp_dB;
-    ylab_str= '|P1(f)| dB';
+    ylab_str= 'MAG-DFT (dB)';
 elseif ismember(p.Results.yscale, {'lin', 'mag'})
     amp_to_plot= amp;
-    ylab_str= '|P1(f)| mag';
+    ylab_str= 'MAG-DFT';
 elseif ismember(p.Results.yscale, {'dbspl'})
     amp_to_plot= dbspl(amp/sqrt(2)); % RMS = AMP/sqrt(2);
-    ylab_str= '|P1(f)| in dB SPL';
+    ylab_str= 'MAG-DFT (in dB SPL)';
 end
 
 if p.Results.plot
     if p.Results.phase
         ax(1)=subplot(211);
     end
+    if ismember(p.Results.xunit, {'khz', 'k'})
+        freq= freq/1e3;
+        xlim_div= 1e3;
+        xlab_str= 'Frequency (kHz)';
+    elseif ismember(p.Results.xunit, {'Hz', 'hz'})
+        xlim_div= 1;
+        xlab_str= 'Frequency (Hz)';
+    end
     
     lHan=plot(freq, amp_to_plot, 'linew', 2);
 %     grid on;
-    xlabel('Frequency (Hz)');
+    xlabel(xlab_str);
     ylabel(ylab_str);
     title(p.Results.title);
     
@@ -148,7 +158,7 @@ if p.Results.plot
     end
     
     set(gca, 'xscale', xscale);
-    xlim(xl_val);
+    xlim(xl_val/xlim_div);
     if ismember(p.Results.yscale, {'log', 'db', 'dbspl'}) &&  p.Results.yRange>0
         ylim([max(amp_to_plot)-p.Results.yRange+10 max(amp_to_plot)+10]);
     end

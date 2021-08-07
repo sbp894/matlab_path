@@ -2,11 +2,12 @@ function [NSAC,delay,AVGrate,TOTALspikes] = SAChalf_m(SpikeTrain1,DELAYbinwidth,
 % File: SAChalf
 % 21 Jun, 2017: SP
 % Calls: SAChalf.c (mex)
-
+% [NSAC,delay,AVGrate,TOTALspikes] = SAChalf_m(SpikeTrain1,DELAYbinwidth,Duration)
+% 
 % Computes Normalized Shuffled Auto-Coprrelogram (NSAC) from a set of Spike Trains and Duration
 % Based on Louage et. al 2004
 
-warning('There''s still some difference between new-mexed and old versions\n');
+warning('This function uses [0 delta] as one bin. Use SACfull_m instead, which uses [-delta/2 delta/2] as one bin. \n');
 
 NUMspikeREPS=length(SpikeTrain1);
 
