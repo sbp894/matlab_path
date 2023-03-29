@@ -1,5 +1,5 @@
 % function sigOUT= gen_ramp_signal(sigIN, fs, durONramp, durOFFramp, verbose)
-function sigOUT= gen_ramp_signal(sigIN, fs, durONramp, durOFFramp, verbose)
+function [sigOUT, ramp_vector]= gen_ramp_signal(sigIN, fs, durONramp, durOFFramp, verbose)
 
 if ~exist('verbose', 'var')
     verbose=false;
@@ -14,8 +14,6 @@ end
 % create ON ramp
 nSampON= round(fs*durONramp);
 NW=1;
-
-
 [ramp_tapers_on_all, ramp_weights_on_all]= dpss(2*nSampON, NW);
 on_taper= ramp_tapers_on_all(1:nSampON,1);
 if durOFFramp == durONramp
@@ -27,8 +25,8 @@ else
     off_taper= ramp_tapers_off((nSampOFF+1):end,1);
 end
 
-on_taper= on_taper/max(on_taper);
-off_taper=off_taper/max(off_taper);
+on_taper= (on_taper-min(on_taper))/range(on_taper);
+off_taper= (off_taper-min(off_taper))/range(off_taper);
 
 if verbose
     fprintf('Weights of On =%.3f and OFF=%.3f\n', ramp_weights_on_all(1), ramp_weights_off_all(1));
