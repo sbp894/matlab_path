@@ -48,7 +48,7 @@ if ~exist('noise2use', 'var')
         noise2use= cn();
     elseif contains(lower(noise_or_Type), 'matched')
         warning('Currently using lpc and not randomized phase of FFT(IN)')
-        a= lpc(inSignal, min(50, numel(inSignal)/50));
+        a= lpc(inSignal, min(250, numel(inSignal)/50));
         b= 1;
         %     fvtool(b, a, fs);
         noise2use= filter(b, a, noiseWhite);
