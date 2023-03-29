@@ -1,4 +1,4 @@
-function spikes_trains= funANmodel_BEZ2018(stim, fsStim, CF_Hz, spont, nrep , doPlot)
+function [spikes_trains, psth, Fs_AN]= funANmodel_BEZ2018(stim, fsStim, CF_Hz, spont, nrep , doPlot)
 stim= stim(:)';
 
 % model parameters
