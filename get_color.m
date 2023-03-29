@@ -15,7 +15,7 @@ elseif ischar(col_name)
             out_color= [215 48 39]/255;
             
         case {'g', 'green'}
-            out_color= [27 158 119]/255;
+            out_color= [119, 172, 48]/255;
             
         case {'lb', 'lightblue'}
             out_color= [145 191 219]/255;
@@ -24,7 +24,7 @@ elseif ischar(col_name)
             out_color= [252 141 89]/255;
             
         case {'lg', 'lightgreen'}
-            out_color= [102 194 165]/255;
+            out_color= [171 240 160]/255;
             
         case {'dg', 'darkgreen'}
             out_color= [0 136 55]/255;
@@ -32,12 +32,15 @@ elseif ischar(col_name)
         case {'prp', 'purple'}
             out_color= [123 50 148]/255;
             
-        case {'light_dg_prp'}
-            out_color= [247 247 247]/255;
+        case {'light_prp', 'lprp', 'light_purple'}
+            out_color= [177, 156, 217]/255;
             
         case {'gray'}
             out_color= [100 100 100]/255;
-            
+
+        case {'lgray','lightgray'}
+            out_color= [150 150 150]/255;
+
         case {'wg'} % white-gray
             out_color= [200 200 200]/255;
             
@@ -66,6 +69,9 @@ elseif ischar(col_name)
             
         case {'pink'}
             out_color= [255 192 203]/255;
+
+        case {'lavender'}
+            out_color= [244,187,255]/255;
     end
     
 elseif isnumeric(col_name)
