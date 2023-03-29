@@ -27,7 +27,7 @@ void SCCfull(double *SpikeMAT1, double *NUMspikes1, long NUMspikeREPS1, long Kma
 	   for (SpikeIND=0; SpikeIND<NUMspikes1[REPindREF]; SpikeIND++) {
 		   for (REPindCOMP=0; REPindCOMP<NUMspikeREPS2; REPindCOMP++) {
  				for (COMPSpikeIND=0; COMPSpikeIND<NUMspikes2[REPindCOMP]; COMPSpikeIND++) {
-					intIND=nzmax+floor((SpikeMAT2[REPindCOMP*Kmax2+COMPSpikeIND]-SpikeMAT1[REPindREF*Kmax1+SpikeIND])/DelayBinWidth[0]);
+					intIND=nzmax+round((SpikeMAT2[REPindCOMP*Kmax2+COMPSpikeIND]-SpikeMAT1[REPindREF*Kmax1+SpikeIND])/DelayBinWidth[0]);
 					
 					if (intIND>=0 && intIND<=2*nzmax)
 					{
@@ -110,7 +110,8 @@ void mexFunction( int nlhs, mxArray *plhs[],
    }
    
    /*  set the output pointer to the output matrix SCC */	
-	nzmax = floor(DelayMax[0]/DelayBinWidth[0]);
+	nzmax = floor(DelayMax[0]/DelayBinWidth[0] - 1.0/2);
+   //printf("size = %d  \n", nzmax);
 	plhs[0] = mxCreateDoubleMatrix(1,2*nzmax+1, mxREAL);
    /*  create a C pointer to a copy of the output matrix SCC */
    SCC = mxGetPr(plhs[0]);
@@ -122,7 +123,7 @@ void mexFunction( int nlhs, mxArray *plhs[],
    
    for (i=0; i<=2*nzmax; i++)
    {
-	   delay[i]=-DelayMax[0]+DelayBinWidth[0]*i;
+	   delay[i]=-nzmax*DelayBinWidth[0]+DelayBinWidth[0]*i;
    }
    
    /*  call the C subroutine */
