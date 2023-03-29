@@ -3,7 +3,7 @@
 function Hd= get_filter_designfilt(filtType, freqWindow, fs, filtOrder, plotYes)
 
 if ~exist('filtOrder', 'var')
-    filtOrder= 4;
+    filtOrder= 2;
 end
 if ~exist('plotYes', 'var')
     plotYes =0;
