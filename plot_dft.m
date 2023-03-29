@@ -134,16 +134,16 @@ if p.Results.plot
     if p.Results.phase
         ax(1)=subplot(211);
     end
-    if ismember(p.Results.xunit, {'khz', 'k'})
+    if ismember(lower(p.Results.xunit), {'khz', 'k'})
         freq= freq/1e3;
         xlim_div= 1e3;
         xlab_str= 'Frequency (kHz)';
-    elseif ismember(p.Results.xunit, {'Hz', 'hz'})
+    elseif ismember(lower(p.Results.xunit), 'hz')
         xlim_div= 1;
         xlab_str= 'Frequency (Hz)';
     end
     
-    lHan=plot(freq, amp_to_plot, 'linew', 2);
+    lHan=plot(freq, amp_to_plot, 'linew', 1.5);
 %     grid on;
     xlabel(xlab_str);
     ylabel(ylab_str);

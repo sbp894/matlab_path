@@ -100,7 +100,7 @@ if p.Results.plot
         ylab_str = 'PSD (dB/Hz)';
         
         if p.Results.yrange>0
-            yl_val = [max(Pxx_to_plot)-p.Results.yrange max(Pxx_to_plot)+5];
+            yl_val = [max(Pxx_to_plot)-p.Results.yrange max(Pxx_to_plot)+3];
         end
         
     elseif ismember(lower(p.Results.yscale), {'lin', 'mag'})

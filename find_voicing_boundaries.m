@@ -35,7 +35,7 @@ if doPlot
     figure(1);
     clf;
     
-    subplot(211)
+    sp_ax(1)= subplot(211);
     plot(tSig, sig);
     ylabel('Signal');
     
@@ -45,7 +45,7 @@ if doPlot
     ylabel('Voicing mask');
     set(gca, 'YColor', get(l, 'color'), 'FontSize', fSize);
     
-    subplot(212)
+    sp_ax(2)= subplot(212);
     plot(tSig, y_lp);
     ylabel(sprintf('Lowpassed at %.0f Hz', f_lp_co));
     
@@ -61,5 +61,6 @@ if doPlot
     xlabel('time (sec)')
     
     set(gcf, 'Units', 'inches', 'Position', [1 1 10 7]);
+    linkaxes(sp_ax, 'x')
 %     saveas(gcf, 'voicing_detect', 'png');
 end
