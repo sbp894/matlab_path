@@ -1,6 +1,6 @@
 % function [outSignal, noise]= create_noisy_signal(inSignal, targetSNR, noise_or_Type)
 % noise_or_Type:
-%   string: {'white', 'pink', 'brown', 'blue', 'purple'},
+%   string: {'white', 'pink', 'brown', 'blue', 'purple'}, or path to a file that has a structure: with b_filt and a_filt fields
 %   numeric: inputAssumes S(f) has a slope (1/f^m),
 %   vector: should be same length as inSignal
 function [outSignal, noise2use]= create_noisy_signal(inSignal, targetSNR, noise_or_Type, fs, fCorner)
@@ -34,7 +34,7 @@ elseif isnumeric(noise_or_Type)
         noise2use= noise_or_Type;
     end
 elseif ischar(noise_or_Type)
-    if isempty(contains(noise_or_Type, {'white', 'pink', 'brown', 'blue', 'purple'}))
+    if isempty(contains(noise_or_Type, {'white', 'pink', 'brown', 'blue', 'purple'})) && ~exist(noise_or_Type, 'file')
         error('noise_or_Type unknown');
     end
 end
@@ -51,6 +51,11 @@ if ~exist('noise2use', 'var')
         a= lpc(inSignal, min(250, numel(inSignal)/50));
         b= 1;
         %     fvtool(b, a, fs);
+        noise2use= filter(b, a, noiseWhite);
+    elseif exist(noise_or_Type, 'file')
+        filt_data= load(noise_or_Type);
+        b= filt_data.b_filt;
+        a= filt_data.a_filt;
         noise2use= filter(b, a, noiseWhite);
     end
 end
