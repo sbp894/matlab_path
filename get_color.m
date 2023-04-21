@@ -8,26 +8,33 @@ if ~exist('col_name', 'var')
     
 elseif ischar(col_name)
     switch col_name
-        case {'b', 'blue'}
-            out_color= [69 117 180]/255;
-            
+           
         case {'r', 'red'}
             out_color= [215 48 39]/255;
             
         case {'g', 'green'}
             out_color= [119, 172, 48]/255;
             
-        case {'lb', 'lightblue'}
-            out_color= [145 191 219]/255;
-            
+        case {'b', 'blue'}
+            out_color= [69 117 180]/255;
+
         case {'lr', 'lightred'}
             out_color= [252 141 89]/255;
-            
+
         case {'lg', 'lightgreen'}
             out_color= [171 240 160]/255;
             
+        case {'lb', 'lightblue'}
+            out_color= [145 191 219]/255;            
+            
+        case {'dr', 'darkred'}
+            out_color= [136, 8, 8]/255;
+            
         case {'dg', 'darkgreen'}
             out_color= [0 136 55]/255;
+            
+        case {'db', 'darkblue'}
+            out_color= [0, 0, 139]/255;
             
         case {'prp', 'purple'}
             out_color= [123 50 148]/255;
@@ -46,6 +53,7 @@ elseif ischar(col_name)
             
         case {'black', 'k'}
             out_color= [0 0 0]/255;
+        
         case {'orange'}
             out_color= [90 60 0]/255;
             
@@ -57,9 +65,15 @@ elseif ischar(col_name)
             
         case{'c', 'cyan'}
             out_color= [0 255 255]/255;
-            
+
+        case{'dm', 'darkmagenta'}
+            out_color= [153 0 153]/255;            
+       
         case{'m', 'magenta'}
             out_color= [255 0 255]/255;
+            
+        case{'lm', 'lightmagenta'}
+            out_color= [255 153 255]/255;
             
         case{'lbrown', 'lightbrown'}
             out_color= [181 101 29]/255;
