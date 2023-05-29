@@ -55,7 +55,7 @@ elseif ischar(col_name)
             out_color= [0 0 0]/255;
         
         case {'orange'}
-            out_color= [90 60 0]/255;
+            out_color= [255, 102, 0]/255;
             
         case {'brown', 'br'}
             out_color= [162 20 47]/255;
