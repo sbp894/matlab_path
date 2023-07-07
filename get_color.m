@@ -21,7 +21,7 @@ elseif ischar(col_name)
         case {'lr', 'lightred'}
             out_color= [252 141 89]/255;
 
-        case {'lg', 'lightgreen'}
+        case {'lg', 'lgreen', 'lightgreen'}
             out_color= [171 240 160]/255;
             
         case {'lb', 'lightblue'}
